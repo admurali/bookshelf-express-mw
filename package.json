@@ -1,0 +1,30 @@
+{
+  "name": "bookshelf-express-mw",
+  "version": "0.7.0",
+  "description": "Bookshelf express middleware",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/admurali/bookshelf-express-mw.git"
+  },
+  "keywords": [
+    "bookshelf",
+    "routemap",
+    "express"
+  ],
+  "dependencies": {
+    "bookshelf": "^0.10.3",
+    "knex": "^0.12.0",
+    "mysql": "^2.13.0"
+  },
+  "author": "Adithya Murali <amurali@zetametrics.com>",
+  "contributors": "Adithya Murali <amurali@zetametrics.com>, Sriram Rathinavelu <srathinavelu@zetametrics.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/admurali/bookshelf-express-mw/issues"
+  },
+  "homepage": "https://github.com/admurali/bookshelf-express-mw#readme"
+}
