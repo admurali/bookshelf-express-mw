@@ -1,21 +1,15 @@
 var isKnexLoaded = false;
 var isBookshelfLoaded = false;
 
-function knexFactory (callback) {
+function knexFactory (config, callback) {
   var _knex;
   if (!isKnexLoaded) {
     _knex = require('knex')({
-        client: process.env.RDS_CLIENT,
-        connection: {
-            host     : process.env.RDS_HOSTNAME,
-            user     : process.env.RDS_USERNAME,
-            password : process.env.RDS_PASSWORD,
-            port     : process.env.RDS_PORT,
-            database : process.env.RDS_DATABASE
-        },
+        client: config.client,
+        connection: config.connection,,
         pool: {
-          min: process.env.RDS_POOL_MIN || 0,
-          max: process.env.RDS_POOL_MAX || 50
+          min: (config.pool && config.pool.min) || 0,
+          max: (config.pool && config.pool.max) || 50
         },
         useNullAsDefault: true
     });
@@ -25,9 +19,9 @@ function knexFactory (callback) {
 }
 
 
-function bookshelfFactory () {
+function bookshelfFactory (config) {
   if (!isBookshelfLoaded) {
-    knexFactory(function(knex) {
+    knexFactory(config, function(knex) {
       _bookshelf = require('bookshelf')(knex)
         .plugin('pagination')
         .plugin('visibility');
@@ -38,9 +32,9 @@ function bookshelfFactory () {
 }
 
 module.exports = {
-  middleware: function() {
+  middleware: function(config) {
     return function (req, res, next) {
-      req.bookshelf = bookshelfFactory();
+      req.bookshelf = bookshelfFactory(config);
       // support logging-express-mw if used
       if (req.logger) {
         req.logger.info('Obtained knex connection');
@@ -50,7 +44,7 @@ module.exports = {
       next();
     };
   },
-  bookshelf: function() {
-    return bookshelfFactory();
+  bookshelf: function(config) {
+    return bookshelfFactory(config);
   }
 };
